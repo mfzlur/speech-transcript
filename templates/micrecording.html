@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Web dictaphone</title>
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+    crossorigin="anonymous"
+  />
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"
+  ></script>
+    <style>
+
+*
+  
+  .wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  h1,
+  h2 {
+    font-size: 2rem;
+    text-align: center;
+    font-weight: normal;
+    padding: 0.5rem 0 0 0;
+  }
+  
+  .main-controls {
+    padding: 0.5rem 0;
+  }
+  
+  canvas {
+    display: block;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    height: 135px;
+
+  }
+  
+  #buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  #buttons button {
+    font-size: 1rem;
+    padding: 1rem;
+    width: calc(50% - 0.25rem);
+  }
+  
+  button {
+    font-size: 1rem;
+    background: #2d2d31;
+    text-align: center;
+    color: white;
+    border: none;
+    transition: all 0.2s;
+    padding: 0.5rem;
+  }
+  
+
+  button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Enabled button hover */
+button:not([disabled]):hover {
+    background: rgb(25, 21, 247);
+}
+
+/* Disabled button style */
+button[disabled] {
+  background-color: grey;
+  cursor: not-allowed;
+  color: darkgray;
+}
+  
+
+  /* Make the clips use as much space as possible, and
+   * also show a scrollbar when there are too many clips to show
+   * in the available space */
+  .sound-clips {
+    flex: 1;
+    overflow: auto;
+  }
+  
+  section,
+  article {
+    display: block;
+  }
+  
+  .clip {
+    padding-bottom: 1rem;
+  }
+  
+  audio {
+    width: 100%;
+    display: block;
+    margin: 1rem auto 0.5rem;
+  }
+  
+  .clip p {
+    display: inline-block;
+    font-size: 1.4rem;
+  }
+  
+  .clip button {
+    font-size: 1rem;
+    float: right;
+  }
+  
+  button.send {
+    background: rgb(105, 111, 105);
+    /* padding: 0.5rem 0.75rem; */
+    font-size: 1.2rem;
+    /* border-radius: 15px; */
+    margin-left: 20px;
+  }
+
+  button.delete {
+    background: rgb(126, 4, 4);
+    /* padding: 0.5rem 0.75rem; */
+    font-size: 1.2rem;
+  }
+  button.delete:hover {
+    background: rgb(255, 0, 0);
+  }
+  
+  /* Checkbox hack to control information box display */
+  
+  label {
+    font-size: 3rem;
+    position: absolute;
+    top: 2px;
+    right: 3px;
+    z-index: 5;
+    cursor: pointer;
+    background-color: black;
+    border-radius: 10px;
+  }
+  
+  input[type="checkbox"] {
+    position: absolute;
+    top: -100px;
+  }
+  
+  aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translateX(100%);
+    transition: 0.3s all ease-out;
+    background-color: #efefef;
+    padding: 1rem;
+  }
+  
+  aside p {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+  }
+  
+  aside a {
+    color: #666;
+  }
+  
+  /* Toggled State of information box */
+  input[type="checkbox"]:checked ~ aside {
+    transform: translateX(0);
+  }
+  
+  /* Cursor when clip name is clicked over */
+  
+  .clip p {
+    cursor: pointer;
+    text-decoration: underline;
+    transition: text-decoration 0.2s ease-in-out;
+    position: relative;
+    
+    &:hover::after {
+        content: 'click to chage the name';
+        position: absolute;
+        z-index: 1;
+        top: -1.25em;
+        margin: 0 auto;
+        white-space: nowrap;
+        background-color: #f8f8f8;
+        padding: 0.5em;
+        border-radius: 0.5em;
+        opacity: 0.4;
+        
+    }
+  }
+  
+  /* Adjustments for wider screens */
+  @media all and (min-width: 800px) {
+    /* Don't take all the space as readability is lost when line length
+       goes past a certain size */
+    .wrapper {
+      width: 90%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+  }
+
+    </style>
+  </head>
+  <body class="bg-info">
+
+    <div class="wrapper">
+      <h1 class="display-3">Start Recording Your Voice</h1><br><br>
+
+ 
+
+      <section class="main-controls">
+        <canvas class="visualizer" height="60px"></canvas>
+        <div id="buttons">
+          <button class="record">Start Recording</button>
+          <button class="stop" disabled>Stop Recording</button>
+        </div>
+      </section>
+
+      <section class="sound-clips">
+
+
+      </section>
+
+    </div>
+
+    <br /><br /><br><br><br>
+    <br>
+    <a href="{{ url_for('dashboard' , user_id=user_id) }}"><button class="btn btn-secondary">Go Back to Home Page</button></a>
+
+    <script src="static/main.js"></script>
+  
+
+  </body>
+</html>
